@@ -18,7 +18,8 @@ export const checkout = async (req, res) => {
 
         const options = {
             amount: Number(amount) * 100,
-            currency: "INR"
+            currency: "INR",
+            notes: req.body.notes
         }
 
         const order = await instance.orders.create(options);
