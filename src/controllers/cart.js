@@ -35,8 +35,7 @@ export const addToCart = async (req, res) => {
         let { productId, detailsId } = req.body;
         let query = {};
         let filter = {
-            user_id: mongoUser._id, 
-            "products.product_id": productId, 
+            user_id: mongoUser._id,
             "products.details": detailsId
         };
 
