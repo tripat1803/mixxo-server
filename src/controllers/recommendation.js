@@ -24,26 +24,20 @@ export const recommendProducts = async (req, res) => {
   }
 };
 
-export const createRecommendProducts = async (req, res) => {
-  try {
-    let details = await RecommendProducts.find({});
+export const createRecommendProducts = async () => {
+  let details = await RecommendProducts.find({});
 
-    if (details.length !== 0) {
-      return;
-    }
-
-    const recommendProducts = new RecommendProducts({
-      maxOrdered: [],
-      maxRated: [],
-      total: [],
-    });
-
-    await recommendProducts.save();
-  } catch (err) {
-    res.status(500).json({
-      message: "Server error occured",
-    });
+  if (details.length !== 0) {
+    return;
   }
+
+  const recommendProducts = new RecommendProducts({
+    maxOrdered: [],
+    maxRated: [],
+    total: [],
+  });
+  
+  await recommendProducts.save();
 };
 
 export const updateRecommendProducts = async () => {
