@@ -256,7 +256,7 @@ export const getProductByCategory = async (req, res) => {
   } catch (err) {
     res.status(401).json({ message: err.message });
   }
-};
+}
 
 export const getAllCategoryProducts = async (req, res) => {
   try {
@@ -269,11 +269,19 @@ export const getAllCategoryProducts = async (req, res) => {
       }
     }]);
 
-    if (!details) {
+    let data1 = await Category.populate(details, {
+      path: "_id"
+    });
+
+    let finalData = await ProductDetails.populate(data1, {
+      path: "outlets.details.productDetailsId"
+    })
+
+    if (!finalData) {
       return res.status(500).json({ message: "Some error occured" });
     }
 
-    res.status(200).json(details);
+    res.status(200).json(finalData);
   } catch (err) {
     res.status(401).json({ message: err.message });
   }
