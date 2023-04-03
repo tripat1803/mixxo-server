@@ -83,7 +83,7 @@ export const verification = async (req, res) => {
                 products: order,
                 shippingPrice: details.items[0].notes.shippingPrice,
                 taxPrice: details.items[0].notes.taxPrice,
-                totalPrice: details.items[0].amount,
+                totalPrice: details.items[0].amount/100,
                 shippingId: {
                     mobile: shipping.mobile,
                     address: shipping.address,
