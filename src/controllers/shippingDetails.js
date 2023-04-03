@@ -3,6 +3,14 @@ import { Shipping } from "../models/shipping.model.js";
 export const createShippingDetails = async (req, res) => {
     try{
         let { mongoUser } = req.user;
+        
+        let data = await Shipping.findOne({ mobile: req.body.mobile, address: req.body.address, pincode: req.body.pincode, city: req.body.city, state: req.body.state });
+
+        if(data){
+            return res.status(500).json({
+                message: "Details already exists"
+            });
+        }
 
         let response = await Shipping.updateMany({ user_id: mongoUser._id }, {
             default: false
