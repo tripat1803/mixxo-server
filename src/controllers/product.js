@@ -261,7 +261,6 @@ export const getProductByCategory = async (req, res) => {
 export const getAllCategoryProducts = async (req, res) => {
   try {
     let details = await Product.aggregate([{
-      $limit: 3,
       $group: {
         _id: "$category",
         outlets: {
