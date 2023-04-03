@@ -226,7 +226,7 @@ export const getCategory = async (req, res) => {
   } catch (err) {
     res.status(401).json({ message: err.message });
   }
-};
+}
 
 export const getProductByCategory = async (req, res) => {
   try {
@@ -257,3 +257,25 @@ export const getProductByCategory = async (req, res) => {
     res.status(401).json({ message: err.message });
   }
 };
+
+export const getAllCategoryProducts = async (req, res) => {
+  try {
+    let details = await Product.aggregate([{
+      $limit: 3,
+      $group: {
+        _id: "$category",
+        outlets: {
+          $addToSet: "$$ROOT"
+        }
+      }
+    }]);
+
+    if (!details) {
+      return res.status(500).json({ message: "Some error occured" });
+    }
+
+    res.status(200).json(details);
+  } catch (err) {
+    res.status(401).json({ message: err.message });
+  }
+}
