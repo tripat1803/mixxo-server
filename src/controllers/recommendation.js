@@ -24,103 +24,62 @@ export const recommendProducts = async (req, res) => {
   }
 };
 
-export const createRecommendProducts = async (req, res) => {
-  try {
-    let details = await RecommendProducts.find({});
+export const createRecommendProducts = async () => {
+  let details = await RecommendProducts.find({});
 
-    if (details.length !== 0) {
-      return;
-    }
-
-    const recommendProducts = new RecommendProducts({
-      maxOrdered: [],
-      maxRated: [],
-      total: [],
-    });
-
-    await recommendProducts.save();
-  } catch (err) {
-    res.status(500).json({
-      message: "Server error occured",
-    });
+  if (details.length !== 0) {
+    return;
   }
+
+  const recommendProducts = new RecommendProducts({
+    maxOrdered: [],
+    maxRated: [],
+    total: [],
+  });
+  
+  await recommendProducts.save();
 };
 
 export const updateRecommendProducts = async () => {
-  let order = [];
-  let review = [];
-  let total = [];
-  async.parallel({
-    task1: async function (callback) {
-      try {
-        let orderScore = await Recommendation.find({})
-          .sort([["order_score", -1]])
-          .limit(3);
-        orderScore.forEach((item) => {
+  try{
+      let order = [];
+      let review = [];
+      let total = [];
+      let orderScore = await Recommendation.find({}).sort([["order_score", -1]]).limit(3);
+      let reviewScore = await Recommendation.find({}).sort([["review_score", -1]]).limit(3);
+      let totalScore = await Recommendation.find({}).sort([["total_score", -1]]).limit(3);
+      orderScore.forEach((item) => {
           order.push({
-            product_id: item.product_id,
+              product_id: item.product_id
           });
-        });
-        callback(null, order);
-      } catch (err) {
-        callback(err, total);
-      }
-    },
-    task2: async function (callback) {
-      try {
-        let reviewScore = await Recommendation.find({})
-          .sort([["review_score", -1]])
-          .limit(3);
-        reviewScore.forEach((item) => {
+      });
+      reviewScore.forEach((item) => {
           review.push({
-            product_id: item.product_id,
+              product_id: item.product_id
           });
-        });
-        callback(null, review);
-      } catch (err) {
-        callback(err, total);
-      }
-    },
-    task3: async function (callback) {
-      try {
-        let totalScore = await Recommendation.find({})
-          .sort([["total_score", -1]])
-          .limit(3);
-        totalScore.forEach((item) => {
+      });
+      totalScore.forEach((item) => {
           total.push({
-            product_id: item.product_id,
+              product_id: item.product_id
           });
-        });
-        callback(null, total);
-      } catch (err) {
-        callback(err, total);
-      }
-    },
-    async function(err, results) {
-      if (err) {
-        console.log(err);
-      } else {
-        await RecommendProducts.updateMany(
-          {},
-          {
-            $set: {
+      });
+
+      await RecommendProducts.updateMany({}, {
+          $set: {
               maxOrdered: order,
               maxRated: review,
-              total: total,
-            },
+              total: total
           }
-        );
-        await Recommendation.updateMany(
-          {},
-          {
-            $set: {
+      });
+
+      await Recommendation.updateMany({}, {
+          $set: {
               review_score: 0,
               order_score: 0,
-              total_score: 0,
-            },
+              total_score: 0
           }
-        );
-      }
-    },
-  });
-};
+      });
+  } catch(err){
+      console.log(err);
+  }
+}

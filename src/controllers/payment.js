@@ -18,7 +18,11 @@ export const checkout = async (req, res) => {
 
         const options = {
             amount: Number(amount) * 100,
-            currency: "INR"
+            currency: "INR",
+            notes: {
+                userId: String(mongoUser._id),
+                ...req.body.items
+            }
         }
 
         const order = await instance.orders.create(options);
@@ -79,7 +83,7 @@ export const verification = async (req, res) => {
                 products: order,
                 shippingPrice: details.items[0].notes.shippingPrice,
                 taxPrice: details.items[0].notes.taxPrice,
-                totalPrice: details.items[0].notes.totalPrice,
+                totalPrice: details.items[0].amount/100,
                 shippingId: {
                     mobile: shipping.mobile,
                     address: shipping.address,

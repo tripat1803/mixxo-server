@@ -9,12 +9,26 @@ import { Category } from "../models/category.model.js";
 
 export const createProduct = async (req, res) => {
   try {
+    let imageData = [];
+    let data = await Promise.all(req.body.image.map((item) => {
+      return cloud.uploader.upload(item, {
+        folder: "MixxoProducts",
+      });
+    }));
+
+    data.forEach((item) => {
+      imageData.push({
+        public_id: item.public_id,
+        url: item.secure_url
+      })
+    })
+
     const product = new Product({
       name: req.body.name,
       description: req.body.description,
       category: req.body.categoryId,
       details: [],
-      image: [],
+      image: imageData,
     });
 
     let details = await product.save();
@@ -226,7 +240,7 @@ export const getCategory = async (req, res) => {
   } catch (err) {
     res.status(401).json({ message: err.message });
   }
-};
+}
 
 export const getProductByCategory = async (req, res) => {
   try {
@@ -256,4 +270,33 @@ export const getProductByCategory = async (req, res) => {
   } catch (err) {
     res.status(401).json({ message: err.message });
   }
-};
+}
+
+export const getAllCategoryProducts = async (req, res) => {
+  try {
+    let details = await Product.aggregate([{
+      $group: {
+        _id: "$category",
+        outlets: {
+          $addToSet: "$$ROOT"
+        }
+      }
+    }]);
+
+    let data1 = await Category.populate(details, {
+      path: "_id"
+    });
+
+    let finalData = await ProductDetails.populate(data1, {
+      path: "outlets.details.productDetailsId"
+    })
+
+    if (!finalData) {
+      return res.status(500).json({ message: "Some error occured" });
+    }
+
+    res.status(200).json(finalData);
+  } catch (err) {
+    res.status(401).json({ message: err.message });
+  }
+}
