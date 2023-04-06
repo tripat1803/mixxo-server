@@ -38,7 +38,8 @@ export const createProduct = async (req, res) => {
     }
 
     res.status(200).json({
-      message: "Product added"
+      message: "Product added",
+      details
     });
   } catch (err) {
     res.status(401).json({ message: err.message });
