@@ -9,12 +9,26 @@ import { Category } from "../models/category.model.js";
 
 export const createProduct = async (req, res) => {
   try {
+    let imageData = [];
+    let data = await Promise.all(req.body.image.map((item) => {
+      return cloud.uploader.upload(item, {
+        folder: "MixxoProducts",
+      });
+    }));
+
+    data.forEach((item) => {
+      imageData.push({
+        public_id: item.public_id,
+        url: item.secure_url
+      })
+    })
+
     const product = new Product({
       name: req.body.name,
       description: req.body.description,
       category: req.body.categoryId,
       details: [],
-      image: [],
+      image: imageData,
     });
 
     let details = await product.save();
