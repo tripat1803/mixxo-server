@@ -26,6 +26,24 @@ export const createProductDetails = async (req, res) => {
     }
 }
 
+export const getProductDetails = async (req, res) => {
+    try{
+        let details = await ProductDetails.findOne({ _id: req.params.id });
+
+        if(!details){
+            return res.staus(500).json({
+                message: "Som error occured"
+            })
+        }
+        
+        res.status(200).json(details);
+    } catch(err){
+        res.status(500).json({
+            message: err
+        })
+    }
+}
+
 export const deleteProductDetails = async (req, res) => {
     try{
         let details = await ProductDetails.findOneAndDelete({ _id: req.params.id });
