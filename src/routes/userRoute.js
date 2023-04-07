@@ -7,7 +7,7 @@ const router = express.Router();
 router.route("/create").post(createUser);
 router.route("/get").get(verifyUser, getUser);
 router.route("/update").post(verifyUser, updateUser);
-router.route("/all").post(verifyUser, getAllUsers);
+router.route("/all").post(verifyAdmin, getAllUsers);
 router.route("/admin/create").post(verifyAdmin, createAdminUser);
 
 export default router;
