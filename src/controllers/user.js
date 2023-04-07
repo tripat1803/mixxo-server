@@ -90,17 +90,8 @@ export const getAllUsers = async (req, res) => {
         let limit = req.body.limit || 15;
         let skip = (page - 1) * limit;
 
-        let details = await User.aggregate([
-            {
-                $facet: {
-                    "count": [{ $count: {} }],
-                    "data": [
-                        { $skip: skip },
-                        { $limit: limit }
-                    ]
-                }
-            }
-        ]);
+        let count = await User.find({}).count;
+        let details = await User.find({}).skip(skip).limit(limit).lean();
 
         if(!details){
             return res.status(500).json({
@@ -108,7 +99,10 @@ export const getAllUsers = async (req, res) => {
             });
         }
 
-        res.status(200).json(details);
+        res.status(200).json({
+            data: details,
+            count
+        });
     } catch(err){
         res.status(500).json({
             messagee: "Some error occured"
