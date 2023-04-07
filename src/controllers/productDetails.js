@@ -61,22 +61,6 @@ export const deleteProductDetails = async (req, res) => {
                 }
             }
         });
-
-        await Recommendation.deleteOne({ details_id: req.params.id });
-
-        await RecommendProducts.updateMany({}, {
-            $pull: {
-                maxOrdered: {
-                    details_id: req.params.id
-                },
-                maxRated: {
-                    details_id: req.params.id
-                },
-                total: {
-                    details_id: req.params.id
-                }
-            }
-        });
         
         res.status(200).json({
             message: "Details Deleted"
