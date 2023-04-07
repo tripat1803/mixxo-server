@@ -93,7 +93,7 @@ export const getAllUsers = async (req, res) => {
         let details = await User.aggregate([
             {
                 $facet: {
-                    "count": [{ $count: "_id" }],
+                    "count": [{ $count: {} }],
                     "data": [
                         { $skip: skip },
                         { $limit: limit }
