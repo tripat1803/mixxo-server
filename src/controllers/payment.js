@@ -103,7 +103,7 @@ export const verification = async (req, res) => {
 
             await Cart.deleteOne({user_id: details.items[0].notes.userId});
 
-            res.redirect("https://mixxo.vercel.app/");
+            res.redirect("https://mixxo.in");
         } else {
             let response = {
                 success: false
