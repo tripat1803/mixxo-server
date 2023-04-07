@@ -90,7 +90,7 @@ export const getAllUsers = async (req, res) => {
         let limit = req.body.limit || 15;
         let skip = (page - 1) * limit;
 
-        let details = User.find({}).skip(skip).limit(limit);
+        let details = await User.find({}).skip(skip).limit(limit);
 
         if(!details){
             return res.status(500).json({
