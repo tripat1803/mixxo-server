@@ -1,5 +1,5 @@
 import express from "express";
-import { createProduct, deleteProduct, deleteProductImage, getAllCategoryProducts, getAllProduct, getCategory, getProduct, getProductByCategory, uploadProductImage } from "../controllers/product.js";
+import { createProduct, deleteProduct, deleteProductImage, getAllCategoryProducts, getAllProduct, getCategory, getProduct, getProductByCategory, updateProduct, uploadProductImage } from "../controllers/product.js";
 import { verifyAdmin } from "../middlewares/auth.js";
 
 const router = express.Router();
@@ -13,5 +13,6 @@ router.route("/upload").post(verifyAdmin, uploadProductImage);
 router.route("/").post(verifyAdmin, deleteProduct);
 router.route("/delete/:public_id").post(verifyAdmin, deleteProductImage);
 router.route("/group").get(getAllCategoryProducts);
+router.route("/group").put(verifyAdmin, updateProduct);
 
 export default router;

@@ -301,3 +301,22 @@ export const getAllCategoryProducts = async (req, res) => {
     res.status(401).json({ message: err.message });
   }
 }
+
+export const updateProduct = async (req, res) => {
+  try{
+    let { productId, name, description } = req.body;
+
+    let details = await Product.updateOne({ _id: productId }, {
+      $set: {
+        name,
+        description
+      }
+    });
+
+    res.status(200).json({
+      message: "Product details updated"
+    });
+  } catch (err) {
+    res.status(401).json({ message: err.message });
+  }
+}

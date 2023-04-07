@@ -83,3 +83,25 @@ export const createAdminUser = async (req, res) => {
         res.status(401).json({message: err.message});
     }
 }
+
+export const getAllUsers = async (req, res) => {
+    try{
+        let page = req.body.page || 1;
+        let limit = req.body.limit || 15;
+        let skip = (page - 1) * limit;
+
+        let details = User.find({}).skip(skip).limit(limit);
+
+        if(!details){
+            return res.status(500).json({
+                message: "Some error occured"
+            });
+        }
+
+        res.status(200).json(details);
+    } catch(err){
+        res.status(500).json({
+            messagee: "Some error occured"
+        })
+    }
+}

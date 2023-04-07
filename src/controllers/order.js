@@ -1,4 +1,5 @@
 import { Order } from "../models/order.model.js";
+import { Recommendation } from "../models/recommendation.model.js";
 
 // export const createOrder = async (userId, products, shippingPrice, taxPrice, totalPrice) => {
 //     try {
@@ -121,30 +122,16 @@ export const changeUserStatus = async (req, res) => {
     }
 }
 
-// export const deleteOrder = async (req, res) => {
-//     try{
-//         let response = await Order.findOne({ order_id: req.body.orderId });
+export const deleteOrder = async (req, res) => {
+    try{
+        let details = await Order.deleteOne({ order_id: req.body.orderId });
 
-//         response.products.forEach(async (item) => {
-//             let details = await Recommendation.findOne({product_id: item.product_id});
-//             let score1 = Number(details.order_score) - 3;
-//             let score2 = Number(details.total_score) - 3;
-//             await Recommendation.updateOne({product_id: item.product_id}, {
-//                 $set: {
-//                     order_score: score1,
-//                     total_score: score2
-//                 }
-//             })
-//         });
-
-//         await Order.deleteOne({ order_id: req.body.orderId });
-
-//         res.status(200).json({
-//             message: "Order deleted"
-//         });
-//     } catch(err){
-//         res.status(401).json({
-//             message: err.message
-//         })
-//     }
-// }
+        res.status(200).json({
+            message: "Order deleted"
+        });
+    } catch(err){
+        res.status(401).json({
+            message: err.message
+        })
+    }
+}
