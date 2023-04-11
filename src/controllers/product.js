@@ -315,18 +315,17 @@ export const updateProduct = async (req, res) => {
       }));
 
       data.forEach((item) => {
-        imageData.push({
-          public_id: item.public_id,
-          url: item.secure_url
-        })
+        let data = await Product.updateOne({ _id: productId }, {
+          $push: {
+            public_id: item.public_id,
+            url: item.secure_url
+          }
+        });
       })
       let details = await Product.updateOne({ _id: productId }, {
         $set: {
           name,
           description
-        },
-        $push: {
-          image: imageData
         }
       });
       return res.status(200).json({
