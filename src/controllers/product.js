@@ -77,7 +77,7 @@ export const uploadProductImage = async (req, res) => {
 
 export const deleteProductImage = async (req, res) => {
   try {
-    let uploadData = await cloud.uploader.destroy(req.params.public_id);
+    let uploadData = await cloud.uploader.destroy(req.body.public_id);
 
     if (!uploadData) {
       return res.status(500).json({
@@ -90,7 +90,7 @@ export const deleteProductImage = async (req, res) => {
       {
         $pull: {
           image: {
-            public_id: req.params.public_id,
+            public_id: req.body.public_id,
           },
         },
       }
