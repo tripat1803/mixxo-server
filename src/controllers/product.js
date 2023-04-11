@@ -304,8 +304,35 @@ export const getAllCategoryProducts = async (req, res) => {
 
 export const updateProduct = async (req, res) => {
   try{
-    let { productId, name, description } = req.body;
+    let { productId, name, description, image } = req.body;
+    
+    if(image){
+      let imageData = [];
+      let data = await Promise.all(req.body.image.map((item) => {
+        return cloud.uploader.upload(item, {
+          folder: "MixxoProducts",
+        });
+      }));
 
+      data.forEach((item) => {
+        imageData.push({
+          public_id: item.public_id,
+          url: item.secure_url
+        })
+      })
+      let details = await Product.updateOne({ _id: productId }, {
+        $set: {
+          name,
+          description
+        },
+        $push: {
+          image: imageData
+        }
+      });
+      return res.status(200).json({
+        message: "Product details updated"
+      });
+    }
     let details = await Product.updateOne({ _id: productId }, {
       $set: {
         name,
