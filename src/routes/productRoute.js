@@ -11,7 +11,7 @@ router.route("/category/:id").get(getProductByCategory);
 router.route("/create").post(verifyAdmin, createProduct);
 router.route("/upload").post(verifyAdmin, uploadProductImage);
 router.route("/").post(verifyAdmin, deleteProduct);
-router.route("/delete/:public_id").post(verifyAdmin, deleteProductImage);
+router.route("/delete").post(verifyAdmin, deleteProductImage);
 router.route("/group").get(getAllCategoryProducts);
 router.route("/update").put(verifyAdmin, updateProduct);
 
