@@ -13,6 +13,6 @@ router.route("/upload").post(verifyAdmin, uploadProductImage);
 router.route("/").post(verifyAdmin, deleteProduct);
 router.route("/delete").post(verifyAdmin, deleteProductImage);
 router.route("/group").get(getAllCategoryProducts);
-router.route("/update").put(verifyAdmin, updateProduct);
+router.route("/update").post(verifyAdmin, updateProduct);
 
 export default router;

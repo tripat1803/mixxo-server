@@ -303,35 +303,45 @@ export const getAllCategoryProducts = async (req, res) => {
 }
 
 export const updateProduct = async (req, res) => {
-  try{
-    let { productId, name, description, image } = req.body;
+  try {
+    let { productId, name, description } = req.body;
     
-    if(image){
+    if (req.body.image !== null) {
       let imageData = [];
-      let data = await Promise.all(req.body.image.map((item) => {
-        return cloud.uploader.upload(item, {
-          folder: "MixxoProducts",
-        });
-      }));
 
-      data.forEach((item) => {
-        let data = await Product.updateOne({ _id: productId }, {
-          $push: {
+      try{
+        let data = await Promise.all(req.body.image.map((item) => {
+          return cloud.uploader.upload(item, {
+            folder: "MixxoProducts",
+          });
+        }));
+        data.forEach((item) => {
+          imageData.push({
             public_id: item.public_id,
             url: item.secure_url
-          }
-        });
-      })
+          })
+        })
+      } catch(err){
+        return res.status(500).json({
+          message: "Error pushing images"
+        })
+      }
+
+      let productData = await Product.findOne({ _id: productId });
+
       let details = await Product.updateOne({ _id: productId }, {
         $set: {
           name,
-          description
+          description,
+          image: [...productData.image, ...imageData]
         }
       });
+
       return res.status(200).json({
         message: "Product details updated"
       });
     }
+
     let details = await Product.updateOne({ _id: productId }, {
       $set: {
         name,
