@@ -99,7 +99,7 @@ const orderSchema = mongoose.Schema({
     status: {
         type: String,
         default: "Processing",
-        enum: ["Processing", "Delivered"]
+        enum: ["Processing", "Shipped", "Out for delivery", "Delivered"]
     }
 }, {
     timestamps: true
