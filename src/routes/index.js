@@ -10,6 +10,7 @@ import recommendationRoute from "./recommendationRoute.js";
 import orderRoute from "./orderRoute.js";
 import paymentRoute from "./paymentRoute.js";
 import subscriptionRoute from "../utils/subscriptionRoute.js";
+import mobileCodeRoute from "../utils/mobileCodeRoute.js";
 
 const router = express.Router();
 
@@ -30,5 +31,6 @@ router.use("/api/recommend", recommendationRoute);
 router.use("/api/order", orderRoute);
 router.use("/api/subscription", subscriptionRoute);
 router.use("/api/razorpay", paymentRoute);
+router.use("/api/codes", mobileCodeRoute);
 
 export default router;

@@ -10,7 +10,7 @@ const orderSchema = mongoose.Schema({
     },
     shippingId: {
         mobile: {
-            type: Number,
+            type: String,
             required: true
         },
         address: {

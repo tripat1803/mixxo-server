@@ -7,7 +7,7 @@ const shippingInfoSchema = mongoose.Schema({
         required: true
     },
     mobile: {
-        type: Number,
+        type: String,
         required: true
     },
     address: {

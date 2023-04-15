@@ -101,6 +101,17 @@ export const verification = async (req, res) => {
                 })
             }
 
+            if(process.env.VOLLMX_API && process.env.VOLLMX_KEY){
+                fetch(process.env.VOLLMX_API, {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Secret_Key': process.env.VOLLMX_KEY
+                    },
+                    b
+                })
+            }
+
             await Cart.deleteOne({user_id: details.items[0].notes.userId});
 
             res.redirect("https://mixxo.in/profile/order");
