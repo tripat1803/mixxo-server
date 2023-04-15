@@ -13,7 +13,7 @@ export const checkout = async (req, res) => {
         let amount = 0;
 
         cart.products.forEach((item) => {
-            amount += item.details.price * item.quantity
+            amount += (item.details.price - (item.details.price * (item.details.discount / 100)).toFixed(2)) * item.quantity
         })
 
         const options = {
