@@ -1,14 +1,13 @@
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
-import csurf from "csurf";
-import cron from "node-cron";
+// import cron from "node-cron";
 import { connectDatabase } from "./config/database.js";
 import routes from "./src/routes/index.js";
-import {
-  createRecommendProducts,
-  updateRecommendProducts,
-} from "./src/controllers/recommendation.js";
+// import {
+//   createRecommendProducts,
+//   updateRecommendProducts,
+// } from "./src/controllers/recommendation.js";
 
 dotenv.config();
 
@@ -25,10 +24,10 @@ app
   .use(express.urlencoded({ limit: "50mb", extended: false }))
   .use("/", routes)
 
-cron.schedule("* * 23 * * *", () => {
-  createRecommendProducts();
-  updateRecommendProducts();
-});
+// cron.schedule("* * 23 * * *", () => {
+//   createRecommendProducts();
+//   updateRecommendProducts();
+// });
 
 const port = process.env.PORT;
 app.listen(port, () => {
