@@ -1,10 +1,10 @@
 import express from "express";
-import code from "./codes.json" assert { type: "json" };
+import { codes } from "./codes.js";
 
 const router = express.Router();
 
 router.get("/", async (req, res) => {
-    res.status(200).json(code);
+    res.status(200).json(codes);
 })
 
 export default router;
